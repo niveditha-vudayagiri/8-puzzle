@@ -30,13 +30,13 @@ python 8_puzzle_BFS.py
 
 ## Algorithms
 
-# Breadth-First Search (BFS)
+### Breadth-First Search (BFS)
 BFS explores all possible states level by level, ensuring the shortest path to the goal.
 
-# Depth-First Iterative Deepening (DFID)
+### Depth-First Iterative Deepening (DFID)
 DFID combines the benefits of depth-first and breadth-first search, exploring deeper nodes iteratively.
 
-# Bidirectional Search
+### Bidirectional Search
 Bidirectional Search runs two simultaneous searches: one forward from the initial state and one backward from the goal state, meeting in the middle to find the solution faster.
 
 ## Contributing
