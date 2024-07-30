@@ -39,5 +39,23 @@ DFID combines the benefits of depth-first and breadth-first search, exploring de
 ### Bidirectional Search
 Bidirectional Search runs two simultaneous searches: one forward from the initial state and one backward from the goal state, meeting in the middle to find the solution faster.
 
+### Branch and Bound
+An algorithm used to solve combinatorial optimization problems by systematically exploring branches of the search space, pruning branches that exceed the current best solution.
+
+### Hill Climbing
+A local search algorithm that starts with an arbitrary solution and iteratively makes small changes, moving to neighboring states with better objective values until no improvement is found.
+
+### A*
+A graph traversal and search algorithm that finds the shortest path from a start node to a goal node by combining the cost to reach the node and the estimated cost from the node to the goal (using a heuristic).
+
+### Iterative Deepening A*
+A variant of A* that performs a series of depth-first searches with increasing cost limits, combining the space efficiency of DFS with the optimality of A*.
+
+### Best First Search
+A search algorithm that explores a graph by expanding the most promising node chosen according to a specified rule or heuristic.
+
+### Beam Search
+A heuristic search algorithm that explores a graph by expanding the most promising nodes up to a fixed number of best candidates (beam width) at each level, balancing between breadth-first and depth-first search.
+
 ## Contributing
 Feel free to fork this repository, make improvements, and submit pull requests. Contributions are welcome!
