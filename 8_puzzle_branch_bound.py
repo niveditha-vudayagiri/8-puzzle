@@ -1,61 +1,31 @@
 import numpy as np
-import copy
 import visualise_puzzle as vis
-from priority_queue import priorityQueue
+import heapq
 import heuristics
+from node import Node
 
 def isSafe(x, y):
     return 0 <= x < 3 and 0 <= y < 3
 
-# Node structure
-class Node:
-    def __init__(self, parent, mat, empty_tile_pos, cost, level):
-        self.parent = parent
-        self.mat = mat
-        self.empty_tile_pos = empty_tile_pos
-        self.cost = cost
-        self.level = level
-
-    #C(x) = g(x) + h(x)
-    # g(x) -> is the number of moves taken so far. 
-    # h(x) -> is the number of tiles not in their goal positions.
-    def __lt__(self, nxt):
-        return self.cost + self.level < nxt.cost + nxt.level
-
-def reconstructPath(root):
-    path = []
-    while root:
-        path.append(root.mat)
-        root = root.parent
-    return path[::-1]  # Reverse the path
-
-def newNode(mat, empty_tile_pos, new_empty_tile_pos, level, parent, final):
-    new_mat = copy.deepcopy(mat)
-    x1, y1 = empty_tile_pos
-    x2, y2 = new_empty_tile_pos
-    new_mat[x1][y1], new_mat[x2][y2] = new_mat[x2][y2], new_mat[x1][y1]
-    cost = heuristics.manhattan_distance(new_mat, final)
-    return Node(parent, new_mat, new_empty_tile_pos, cost, level)
-
 def branch_and_bound(initial_state, goal_state, empty_tile_pos):
-    pq = priorityQueue()
+    pq = []
+    visited = set()
     cost = heuristics.manhattan_distance(initial_state, goal_state)
     root = Node(None, initial_state, empty_tile_pos, cost, 0)
-    pq.push(root)
-
-    visited = set()
+    
+    heapq.heappush(pq, root)
     visited.add(tuple(root.mat.reshape(-1)))
 
-    while not pq.empty():
-        min_node = pq.pop()
+    while pq:
+        min_node = heapq.heappop(pq)
         if min_node.cost == 0:
-            return reconstructPath(min_node)
+            return Node.reconstruct_path(min_node)
 
         moves = [(-1, 0), (1, 0), (0, -1), (0, 1)]  # Up, Down, Left, Right
         for move in moves:
             new_empty_pos = (min_node.empty_tile_pos[0] + move[0], min_node.empty_tile_pos[1] + move[1])
             if isSafe(new_empty_pos[0], new_empty_pos[1]):
-                child = newNode(min_node.mat, 
+                child = Node.new_node(min_node.mat, 
                                 min_node.empty_tile_pos, 
                                 new_empty_pos, 
                                 min_node.level + 1, 
@@ -63,7 +33,7 @@ def branch_and_bound(initial_state, goal_state, empty_tile_pos):
                                 goal_state)
                 child_state_tuple = tuple(child.mat.reshape(-1))
                 if child_state_tuple not in visited:
-                    pq.push(child)
+                    heapq.heappush(pq, child)
                     visited.add(child_state_tuple)
     return None
 
